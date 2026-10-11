@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net8.0-windows</TargetFramework><UseWPF>true</UseWPF><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><AssemblyName>BT583Printer</AssemblyName><ApplicationIcon>Assets/app.ico</ApplicationIcon><Version>1.2.0</Version><Product>BT-583 Studio</Product><Description>Offline thermal printing studio</Description></PropertyGroup>
+ <ItemGroup><PackageReference Include="ZXing.Net" Version="0.16.11"/><PackageReference Include="System.IO.Ports" Version="8.0.0"/></ItemGroup>
+ <ItemGroup><Resource Include="Assets/app-icon.png"/></ItemGroup>
+</Project>

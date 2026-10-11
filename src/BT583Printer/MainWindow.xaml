@@ -1,0 +1,226 @@
+<Window x:Class="BT583Printer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BT-583 Studio" Icon="Assets/app-icon.png" Width="1220" Height="900" MinWidth="1020" MinHeight="800"
+        FontFamily="Segoe UI" FontSize="13" Background="{DynamicResource Surface}" Foreground="{DynamicResource Ink}">
+    <Window.Resources>
+        <SolidColorBrush x:Key="Surface" Color="#F3F5FA"/>
+        <SolidColorBrush x:Key="Card" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ControlFill" Color="#F5F7FB"/>
+        <SolidColorBrush x:Key="Ink" Color="#17233A"/>
+        <SolidColorBrush x:Key="Muted" Color="#64748B"/>
+        <SolidColorBrush x:Key="Stroke" Color="#DCE3EE"/>
+        <SolidColorBrush x:Key="Hover" Color="#E7EDF8"/>
+        <SolidColorBrush x:Key="Accent" Color="#2563EB"/>
+        <SolidColorBrush x:Key="AccentSoft" Color="#DBEAFE"/>
+        <SolidColorBrush x:Key="PreviewFill" Color="#E9EEF5"/>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ControlFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Stroke}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="11,7"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value><ControlTemplate TargetType="Button">
+                    <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value=".78"/></Trigger>
+                        <Trigger Property="IsPressed" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value=".6"/></Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger>
+                        <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value=".4"/></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate></Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{DynamicResource ControlFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource Accent}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Stroke}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="SelectionBrush" Value="{DynamicResource Accent}"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TextBox">
+                <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                    <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderBrush" Value="{DynamicResource Accent}"/></Trigger>
+                    <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value=".5"/></Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource ControlFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Stroke}"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
+                <Grid>
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8"/>
+                    <ToggleButton Focusable="False" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="Transparent" Padding="10,6"><TextBlock Text="⌄" HorizontalAlignment="Right" Foreground="{DynamicResource Muted}" FontSize="18"/></Border></ControlTemplate></ToggleButton.Template>
+                    </ToggleButton>
+                    <ContentPresenter IsHitTestVisible="False" Margin="10,6,30,6" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+                    <Popup x:Name="PART_Popup" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
+                        <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" CornerRadius="8" MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" Padding="4" MaxHeight="280">
+                            <ScrollViewer CanContentScroll="True"><ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/></ScrollViewer>
+                        </Border>
+                    </Popup>
+                </Grid>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBoxItem">
+                <Border x:Name="Row" CornerRadius="5" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"><ContentPresenter/></Border>
+                <ControlTemplate.Triggers><Trigger Property="IsHighlighted" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Hover}"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource AccentSoft}"/></Trigger></ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="{DynamicResource ControlFill}"/>
+            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem">
+                <Border x:Name="Row" CornerRadius="6" Padding="{TemplateBinding Padding}" Background="Transparent"><ContentPresenter/></Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource Hover}"/></Trigger>
+                    <Trigger Property="IsSelected" Value="True"><Setter TargetName="Row" Property="Background" Value="{DynamicResource AccentSoft}"/></Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Row" Property="BorderBrush" Value="{DynamicResource Accent}"/><Setter TargetName="Row" Property="BorderThickness" Value="1"/></Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ScrollBar">
+                <Track x:Name="PART_Track" IsDirectionReversed="True" Orientation="{TemplateBinding Orientation}">
+                    <Track.DecreaseRepeatButton><RepeatButton x:Name="Decrease" Command="{x:Static ScrollBar.PageUpCommand}" Focusable="False"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.DecreaseRepeatButton>
+                    <Track.Thumb><Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="{DynamicResource Muted}" Opacity=".35" CornerRadius="4" Margin="2"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+                    <Track.IncreaseRepeatButton><RepeatButton x:Name="Increase" Command="{x:Static ScrollBar.PageDownCommand}" Focusable="False"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.IncreaseRepeatButton>
+                </Track>
+            </ControlTemplate></Setter.Value></Setter>
+        <Style.Triggers><Trigger Property="Orientation" Value="Horizontal"><Setter Property="Width" Value="Auto"/><Setter Property="Height" Value="10"/></Trigger></Style.Triggers></Style>
+        <Style TargetType="Slider">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Slider">
+                <Grid><Border Height="4" Background="{DynamicResource Stroke}" CornerRadius="2" VerticalAlignment="Center"/>
+                    <Track x:Name="PART_Track" Orientation="Horizontal">
+                        <Track.DecreaseRepeatButton><RepeatButton Command="{x:Static Slider.DecreaseLarge}" Focusable="False"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.DecreaseRepeatButton>
+                        <Track.Thumb><Thumb Width="16" Height="16"><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="{DynamicResource Accent}" CornerRadius="8" BorderBrush="{DynamicResource Card}" BorderThickness="2"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+                        <Track.IncreaseRepeatButton><RepeatButton Command="{x:Static Slider.IncreaseLarge}" Focusable="False"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style TargetType="CheckBox"><Setter Property="Foreground" Value="{DynamicResource Ink}"/><Setter Property="VerticalContentAlignment" Value="Center"/></Style>
+        <Style TargetType="TabControl"><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TabControl">
+            <DockPanel><StackPanel DockPanel.Dock="Top" Orientation="Horizontal" IsItemsHost="True" Margin="0,0,0,12"/><ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"/></DockPanel>
+        </ControlTemplate></Setter.Value></Setter></Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="{DynamicResource Muted}"/>
+            <Setter Property="Padding" Value="18,9"/>
+            <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="TabItem">
+                <Border x:Name="Tab" Background="Transparent" CornerRadius="8" Padding="{TemplateBinding Padding}" Margin="0,0,6,0"><ContentPresenter ContentSource="Header" RecognizesAccessKey="True"/></Border>
+                <ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter TargetName="Tab" Property="Background" Value="{DynamicResource Card}"/><Setter Property="Foreground" Value="{DynamicResource Ink}"/><Setter Property="FontWeight" Value="SemiBold"/></Trigger><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Tab" Property="Opacity" Value=".75"/></Trigger></ControlTemplate.Triggers>
+            </ControlTemplate></Setter.Value></Setter>
+        </Style>
+        <Style x:Key="Caption" TargetType="TextBlock"><Setter Property="Foreground" Value="{DynamicResource Muted}"/><Setter Property="FontSize" Value="11"/><Setter Property="Margin" Value="0,0,0,7"/></Style>
+    </Window.Resources>
+    <Grid Margin="24" Background="{DynamicResource Surface}">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <Grid Margin="0,0,0,18">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Assets/app-icon.png" Width="48" Height="48" Margin="0,0,13,0"/>
+                    <StackPanel><TextBlock Text="BT-583 Studio" FontSize="26" FontWeight="SemiBold"/><TextBlock Text="Your thermal printing studio · 58 mm" Foreground="{DynamicResource Muted}" Margin="0,2,0,0"/></StackPanel>
+                </StackPanel>
+                <Button Content="Settings" Click="SettingsClick" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0"/>
+            </Grid>
+            <Border Background="{DynamicResource Card}" CornerRadius="12" Padding="16,13" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" Margin="0,0,0,17">
+                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <Grid><ComboBox x:Name="Printers" SelectionChanged="PrinterChanged" Margin="0"/>
+                            <Border x:Name="SerialTarget" Visibility="Collapsed" Background="{DynamicResource ControlFill}" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" CornerRadius="8" Padding="12,9"><TextBlock x:Name="SerialTargetLabel"/></Border>
+                        </Grid>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Refresh" Click="Refresh" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                    <Border Grid.Column="2" Background="{DynamicResource AccentSoft}" CornerRadius="8" Padding="12,8" Margin="16,0,0,0" VerticalAlignment="Center"><TextBlock x:Name="Connection" FontWeight="SemiBold"/></Border>
+                </Grid>
+            </Border>
+        </StackPanel>
+        <TabControl Grid.Row="1" x:Name="Tabs">
+            <TabItem Header="Document">
+                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="3*" MinWidth="530"/><ColumnDefinition Width="20"/><ColumnDefinition Width="2*" MinWidth="330"/></Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Background="{DynamicResource Card}" CornerRadius="12" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" Padding="18">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Top">
+                                <Grid Margin="0,0,0,13"><TextBlock Text="Edit document" FontSize="18" FontWeight="SemiBold"/><TextBlock x:Name="DocumentInfo" MaxWidth="225" TextTrimming="CharacterEllipsis" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{DynamicResource Muted}" FontSize="11"/></Grid>
+                                <WrapPanel><Button Content="New" Click="NewClick" ToolTip="New document · Ctrl+N"/><Button Content="Save" Click="SaveClick" ToolTip="Save template · Ctrl+S"/><Button Content="Load" Click="LoadClick" ToolTip="Load template · Ctrl+O"/><Button Content="Delete Template" Click="DeleteTemplateClick"/></WrapPanel>
+                                <Border BorderBrush="{DynamicResource Stroke}" BorderThickness="0,0,0,1" Margin="0,3,0,9"/>
+                                <WrapPanel><Button x:Name="BoldButton" Content="B" FontWeight="Bold" Tag="Bold" Click="FormatClick" Width="32" ToolTip="Bold the selected text block"/><Button x:Name="UnderlineButton" Content="U" Tag="Underline" Click="FormatClick" Width="32" ToolTip="Underline the selected text block"/><Button x:Name="NormalButton" Width="64" Padding="7" Content="Normal" Tag="Normal" Click="FormatClick" ToolTip="Reset formatting to medium size"/><ComboBox x:Name="SizeChoice" Width="95" SelectionChanged="StyleChanged" ToolTip="Text size"/><ComboBox x:Name="AlignChoice" Width="95" SelectionChanged="StyleChanged" ToolTip="Block alignment"/><ComboBox x:Name="FontChoice" Width="132" SelectionChanged="StyleChanged" ToolTip="Font for raster printing"/></WrapPanel>
+                                <WrapPanel Margin="0,2,0,5"><Button Content="+ Text" Click="AddText"/><Button Content="+ QR" Click="AddQr"/><Button Content="+ Barcode" Click="AddBarcode"/><Button Content="+ Image" Click="AddImage"/><Button Content="+ Line" Click="AddLine"/></WrapPanel>
+                            </StackPanel>
+                            <WrapPanel DockPanel.Dock="Bottom" Margin="0,12,0,0"><Button Content="↑" Click="MoveUp" ToolTip="Move block up"/><Button Content="↓" Click="MoveDown" ToolTip="Move block down"/><Button x:Name="DuplicateButton" Content="Duplicate" Click="DuplicateBlock" ToolTip="Duplicate selected block · Ctrl+D"/><Button x:Name="RemoveButton" Content="Remove Block" Click="RemoveBlock"/><Button x:Name="EditCodeButton" Content="Edit Code" Click="EditCode"/></WrapPanel>
+                            <Grid>
+                                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="155"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Text="BLOCKS" Style="{StaticResource Caption}"/>
+                                <TextBlock Grid.Column="2" Text="SELECTED BLOCK TEXT" Style="{StaticResource Caption}"/>
+                                <Border Grid.Row="1" CornerRadius="8" Background="{DynamicResource ControlFill}">
+                                    <ListBox x:Name="Blocks" SelectionChanged="BlockSelected"><ListBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" ToolTip="{Binding}"/></DataTemplate></ListBox.ItemTemplate></ListBox>
+                                </Border>
+                                <TextBox Grid.Row="1" Grid.Column="2" x:Name="Editor" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontSize="15" Padding="12" TextChanged="EditorChanged"/>
+                            </Grid>
+                        </DockPanel>
+                    </Border>
+                    <GridSplitter Grid.Column="1" Width="6" HorizontalAlignment="Center" Background="Transparent" ResizeBehavior="PreviousAndNext"/>
+                    <Border Grid.Column="2" Background="{DynamicResource Card}" CornerRadius="12" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" Padding="18">
+                        <DockPanel><StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,12,0,0"><TextBlock Text="Zoom" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/><Slider x:Name="Zoom" Minimum="65" Maximum="150" Value="100" TickFrequency="5" IsSnapToTickEnabled="True" Width="110" Margin="12,0" VerticalAlignment="Center" ValueChanged="ZoomChanged"/><TextBlock x:Name="ZoomLabel" Text="100 %" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/></StackPanel><StackPanel DockPanel.Dock="Top" Margin="0,0,0,13"><Grid><TextBlock Text="Print preview" FontSize="18" FontWeight="SemiBold"/><Border Background="{DynamicResource ControlFill}" CornerRadius="6" Padding="8,4" HorizontalAlignment="Right"><TextBlock Text="58 mm" FontSize="11" Foreground="{DynamicResource Muted}"/></Border></Grid><TextBlock x:Name="PreviewInfo" TextTrimming="CharacterEllipsis" ToolTip="Click an element on the paper to select its block" Text="Approximate thermal paper preview" Foreground="{DynamicResource Muted}" Margin="0,5,0,0" FontSize="12"/></StackPanel>
+                            <Border Background="{DynamicResource PreviewFill}" CornerRadius="9"><ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"><Border x:Name="Paper" Width="290" Padding="18,20" Background="White" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8,18"><Border.Effect><DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity=".12"/></Border.Effect><StackPanel x:Name="Preview"/></Border></ScrollViewer></Border>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Print History">
+                <Border Background="{DynamicResource Card}" CornerRadius="12" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" Padding="20">
+                    <DockPanel><StackPanel DockPanel.Dock="Top" Margin="0,0,0,16"><TextBlock Text="Recent prints" FontSize="20" FontWeight="SemiBold"/><TextBlock Text="The last 100 submitted documents, stored on this computer." Foreground="{DynamicResource Muted}" Margin="0,5,0,0"/></StackPanel>
+                        <WrapPanel DockPanel.Dock="Bottom" Margin="0,15,0,0"><Button Content="Print Again" Click="PrintAgain"/><Button Content="Open in Editor" Click="HistoryOpen"/></WrapPanel>
+                        <ListBox x:Name="HistoryList" DisplayMemberPath="Label"/>
+                    </DockPanel>
+                </Border>
+            </TabItem>
+        </TabControl>
+        <Border Grid.Row="2" Background="{DynamicResource Card}" CornerRadius="12" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" Margin="0,18,0,0" Padding="16">
+            <Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Copies" VerticalAlignment="Center" Foreground="{DynamicResource Muted}" Margin="0,0,8,0"/>
+                        <Button Content="−" Click="CopiesDown" Margin="0,0,4,0" Padding="8,7"/><TextBox x:Name="Copies" Text="1" Width="44" Padding="4,7" MaxLength="2" HorizontalContentAlignment="Center"/><Button Content="+" Click="CopiesUp" Margin="4,0,16,0" Padding="8,7"/>
+                        <TextBlock Text="Feed lines" VerticalAlignment="Center" Foreground="{DynamicResource Muted}" Margin="0,0,8,0"/>
+                        <ComboBox x:Name="Feed" Width="65" Margin="0,0,20,0" SelectionChanged="FeedChanged"/>
+                        <CheckBox x:Name="RenderImage" Content="Text as image" VerticalAlignment="Center" ToolTip="Raster printing for Unicode characters and the selected Windows font" Checked="RasterChanged" Unchecked="RasterChanged"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"><Button x:Name="TestButton" Content="Test Print" Click="TestClick" Margin="0,0,9,0" ToolTip="Ctrl+Shift+P"/><Button x:Name="PrintButton" Content="Print  →" Click="PrintClick" Background="{DynamicResource Accent}" BorderBrush="{DynamicResource Accent}" Foreground="White" FontWeight="SemiBold" FontSize="15" Padding="26,13" Margin="0" ToolTip="Ctrl+P"/></StackPanel>
+                </Grid>
+                <TextBlock Grid.Row="1" x:Name="Status" Text="Ready to print" Foreground="{DynamicResource Muted}" Margin="0,12,0,0" FontSize="11" TextWrapping="Wrap"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
