@@ -155,8 +155,8 @@ public sealed class FunctionalTests
                 var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
                 typeof(MainWindow).GetField("document", flags)!.SetValue(window, new Document
                 {
-                    Name = "Motor Test",
-                    Elements = [new TextElement { Text = "TORP MOTORS", Bold = true, Alignment = Alignment.Center, Size = TextSize.Large }, new SeparatorElement(), new TextElement { Text = "Printer test\n\nMotor temperature: 54 °C\nVoltage: 48.7 V\nč ć ž š đ Č Ć Ž Š Đ\n\nThank you!" }, new QrCodeElement { Content = "https://torpmotors.com", Alignment = Alignment.Center, Size = TextSize.Small }]
+                    Name = "Sample Receipt",
+                    Elements = [new TextElement { Text = "SAMPLE RECEIPT", Bold = true, Alignment = Alignment.Center, Size = TextSize.Large }, new SeparatorElement(), new TextElement { Text = "Receipt #0001\n\nCoffee           2.50 EUR\nTea              2.00 EUR\n\nTotal            4.50 EUR\n\nThank you!" }, new QrCodeElement { Content = "https://example.com/receipt/0001", Alignment = Alignment.Center, Size = TextSize.Small }]
                 });
                 typeof(MainWindow).GetMethod("ReloadBlocks", flags)!.Invoke(window, new object[] { 2 });
                 typeof(MainWindow).GetMethod("UpdatePreview", flags)!.Invoke(window, null);
